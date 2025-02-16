@@ -1,0 +1,10 @@
+/* Custom styles for PDF text editing */
+.pdf-page {
+  min-height: 300px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  overflow: auto;
+  background-color: #fff;
+  white-space: pre-wrap;
+  color: black !important;  /* Force black text */
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edited PDF</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Styles to preserve original layout exactly */
+    body, html { margin: 0; padding: 0; }
+    .page-wrapper {
+      position: relative;
+      width: 8.5in;      /* Original page width */
+      height: 11in;      /* Original page height */
+      margin: 0 auto;
+      page-break-after: always;
+    }
+    .page-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+    .page-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      font-family: 'Helvetica', sans-serif;
+      font-size: 12pt;
+      color: black;
+      padding: 0.5in;    /* Match original margins */
+      box-sizing: border-box;
+      background: transparent;
+      overflow: hidden;  /* Prevent overlapping scrolling content */
+    }
+  </style>
+</head>
+<body>
+  {% for bg, page in zip(backgrounds, pages) %}
+    <div class="page-wrapper">
+      <div class="page-bg" style="background-image: url('data:image/png;base64,{{ bg }}')"></div>
+      <div class="page-overlay">
+        <!-- Assuming 'page' content is already cleaned from extra wrappers -->
+        {{ page|safe }}
+      </div>
+    </div>
+  {% endfor %}
+</body>
+</html>

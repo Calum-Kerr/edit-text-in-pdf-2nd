@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Edit PDF Text{% endblock %}
+{% block content %}
+  <h2>Edit PDF Text</h2>
+  <form action="{{ url_for('download') }}" method="post">
+    <input type="hidden" name="pdf_id" value="{{ pdf_id }}">
+    {% for page in pages %}
+      <div class="card mb-3">
+        <div class="card-header">Page {{ loop.index }}</div>
+        <div class="card-body">
+          <div contenteditable="true" class="form-control pdf-page" id="page_{{ loop.index0 }}">
+            {{ page|safe }}
+          </div>
+          <!-- Hidden input to hold edited text -->
+          <input type="hidden" name="page_{{ loop.index0 }}" id="input_page_{{ loop.index0 }}">
+        </div>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success" id="save-btn">Save and Download PDF</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Update hidden inputs on content change
+  document.querySelectorAll(".pdf-page").forEach(function(div){
+    div.addEventListener("input", function(){
+      document.getElementById("input_" + div.id).value = div.innerHTML;
+    });
+  });
+
+  document.querySelector("form").addEventListener("submit", function(e){
+    e.preventDefault(); // prevent default submit
+    // Ensure all divs update their hidden inputs immediately before submission
+    document.querySelectorAll(".pdf-page").forEach(function(div){
+      document.getElementById("input_" + div.id).value = div.innerHTML;
+      div.blur(); // force commit any unsaved changes
+    });
+    // Delay submission to ensure changes propagate
+    setTimeout(() => e.target.submit(), 0);
+  });
+</script>
+{% endblock %}

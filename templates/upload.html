@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Upload PDF{% endblock %}
+{% block content %}
+  <h2>Upload a PDF File</h2>
+  <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="pdf" class="form-label">Choose PDF</label>
+      <input type="file" class="form-control" id="pdf" name="pdf" accept="application/pdf" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+{% endblock %}
